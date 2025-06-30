@@ -1,0 +1,6 @@
+print("hello")
+print(1 + 3)
+print(1 - 3)
+print(111)
+print(1 * 3)
+print(1 / 3)
