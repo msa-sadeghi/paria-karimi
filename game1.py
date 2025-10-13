@@ -7,7 +7,11 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 500, 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("game 1")
 
+RED_COLOR = (255, 0, 0)
+GREEN_COLOR = (0, 255, 0)
+BLUE_COLOR = (0, 0, 255)
 
+current = RED_COLOR
 ninja = Player((100, 200))
 
 running = True
@@ -15,8 +19,10 @@ while running == True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    screen.fill((125, 15, 255))
-    pygame.draw.circle(screen, (0, 255, 0), (SCREEN_WIDTH//2, SCREEN_HEIGHT//2),200)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
+            
+    screen.fill(current)
     ninja.draw(screen)
     pygame.display.update()

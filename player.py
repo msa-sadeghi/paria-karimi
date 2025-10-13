@@ -10,3 +10,7 @@ class Player(Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+    def move(self):
+        # self.rect.x
+        # self.rect.y
