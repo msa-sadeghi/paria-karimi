@@ -30,8 +30,14 @@ while running:
         #         x += 10
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_RIGHT] and x + 50 < WIDTH:
         x += 10
+    elif keys[pygame.K_LEFT] and x > 0:
+        x -= 10
+    elif keys[pygame.K_UP] and y > 0:
+        y -= 10
+    elif keys[pygame.K_DOWN] and y  + 50< HEIGHT:
+        y += 10
     screen.fill((255, 255, 255))
     pygame.draw.rect(screen, "green", (x, y, 50, 50), 3)
     pygame.display.update()
