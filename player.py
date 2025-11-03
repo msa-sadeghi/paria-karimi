@@ -14,28 +14,23 @@ class Player(Sprite):
         screen.blit(self.image, self.rect)
 
     def move(self, keys, width, height):
-        # self.rect.x += self.velovity
+        self.rect.x += self.velovity
 
-        # if self.rect.x + self.rect.size[0] >= width:
-        #     self.velovity = -self.velovity
-        #     self.image = pygame.transform.flip(self.image, True, False)
+        if self.rect.x + self.rect.size[0] >= width:
+            self.velovity = -self.velovity
+            self.image = pygame.transform.flip(self.image, True, False)
 
-        # if self.rect.x <= 0:
-        #     self.velovity = -self.velovity
-        #     self.image = pygame.transform.flip(self.image, True, False)
+        if self.rect.x <= 0:
+            self.velovity = -self.velovity
+            self.image = pygame.transform.flip(self.image, True, False)
         if self.rect.bottom >= height:
             self.gravity = 0
-
-
         self.rect.y += self.gravity
-
-
-
-        # if keys[pygame.K_UP]:
-        #     self.rect.y -= 10
-        # elif keys[pygame.K_DOWN]:
-        #     self.rect.y += 10
-        # if keys[pygame.K_RIGHT]:
-        #     self.rect.x += 10
-        # elif keys[pygame.K_LEFT]:
-        #     self.rect.x -= 10
+        if keys[pygame.K_UP]:
+            self.rect.y -= 10
+        elif keys[pygame.K_DOWN]:
+            self.rect.y += 10
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += 10
+        elif keys[pygame.K_LEFT]:
+            self.rect.x -= 10
