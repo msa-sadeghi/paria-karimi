@@ -8,7 +8,8 @@ class Coffee(Sprite):
         self.rect = self.image.get_rect(topleft=(x,y))
         group.add(self)
 
-    def update(self, player, score):
+    def check_collision(self, player, score):
+        
         if player.rect.colliderect(self.rect):
             self.kill()
             score += 1

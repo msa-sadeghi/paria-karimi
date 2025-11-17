@@ -40,7 +40,9 @@ while running == True:
     ninja.move(keys, SCREEN_WIDTH, SCREEN_HEIGHT)
     ninja.draw(screen)
     coffee_group.draw(screen)
-    score =  coffee_group.update(ninja, score)
+    for coffee in coffee_group.sprites():
+        score = coffee.check_collision(ninja, score)
+
     screen.blit(score_text, (10, 10))
 
     
