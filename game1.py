@@ -39,6 +39,7 @@ while running == True:
     keys = pygame.key.get_pressed()
     ninja.move(keys, SCREEN_WIDTH, SCREEN_HEIGHT)
     ninja.draw(screen)
+    ninja.animation()
     coffee_group.draw(screen)
     for coffee in coffee_group.sprites():
         score = coffee.check_collision(ninja, score)
