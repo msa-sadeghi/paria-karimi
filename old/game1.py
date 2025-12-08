@@ -21,6 +21,8 @@ ninja = Player((100, 80))
 coffee_group = pygame.sprite.Group()
 coffee1 = Coffee("coffee.png", 300, 150, coffee_group)
 coffee1 = Coffee("coffee.png", 400, 250, coffee_group)
+
+
 FPS = 60
 clock = pygame.time.Clock()
 running = True
@@ -43,6 +45,7 @@ while running == True:
     coffee_group.draw(screen)
     for coffee in coffee_group.sprites():
         score = coffee.check_collision(ninja, score)
+        
 
     screen.blit(score_text, (10, 10))
 
