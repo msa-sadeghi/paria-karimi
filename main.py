@@ -8,7 +8,6 @@ FPS = 60
 CLOCK = pygame.time.Clock()
 
 cat = Player('Cat', 200, 200)
-dog = Player('Dog', 400, 200)
 
 running = True
 while running:
@@ -18,6 +17,5 @@ while running:
     screen.fill("lightgreen")  
     CLOCK.tick(FPS)
     cat.draw(screen)
-    dog.draw(screen)
     pygame.display.update()
 

@@ -17,8 +17,21 @@ class Player(Sprite):
         self.image = self.all_images['Idle'][0]
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+        self.animation_state = 'Idle'
+        self.frame_index = 0
+        self.animate_time=0
     def update(self):
         pass
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+        self.animate()
+
+    def animate(self):
+        if pygame.time.get_ticks() - self.animate_time > 150:
+            self.frame_index += 1
+            self.animate_time = pygame.time.get_ticks()
+            if self.frame_index >= len(self.all_images[self.animation_state]):
+                self.frame_index = 0
+            self.image = self.all_images[self.animation_state][self.frame_index]
+        
