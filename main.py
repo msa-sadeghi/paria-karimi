@@ -17,5 +17,6 @@ while running:
     screen.fill("lightgreen")  
     CLOCK.tick(FPS)
     cat.draw(screen)
+    cat.move()
     pygame.display.update()
 

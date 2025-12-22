@@ -20,11 +20,15 @@ class Player(Sprite):
         self.animation_state = 'Idle'
         self.frame_index = 0
         self.animate_time=0
+        self.direction =  1
+        self.yspeed = 0
+        self.jump_state = False
     def update(self):
         pass
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        img = pygame.transform.flip(self.image, self.direction == -1, False)
+        surface.blit(img , self.rect)
         self.animate()
 
     def animate(self):
@@ -34,4 +38,39 @@ class Player(Sprite):
             if self.frame_index >= len(self.all_images[self.animation_state]):
                 self.frame_index = 0
             self.image = self.all_images[self.animation_state][self.frame_index]
-        
+    
+    def move(self):
+        dx = 0
+        dy = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.change_animation("Walk")
+            self.direction = -1
+            dx -= 5
+        if keys[pygame.K_RIGHT]:
+            self.direction = 1
+            self.change_animation("Walk")
+            dx += 5
+        if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT] and not self.jump_state:
+            self.change_animation("Idle")
+        self.rect.x += dx
+
+        if keys[pygame.K_UP]:
+            self.yspeed = -10
+            self.jump_state = True
+            self.change_animation("Jump")
+        self.yspeed += 1
+        dy += self.yspeed
+
+        if self.rect.bottom + dy >= 640:
+            dy = 0
+            self.yspeed = 0
+            self.jump_state = False
+
+        self.rect.y += dy
+
+    def change_animation(self, new_animation):
+        if self.animation_state != new_animation:
+            self.animation_state = new_animation
+            self.frame_index = 0
+            self.animate_time = pygame.time.get_ticks()
