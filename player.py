@@ -23,6 +23,7 @@ class Player(Sprite):
         self.direction =  1
         self.yspeed = 0
         self.jump_state = False
+        self.is_grounded = True
     def update(self):
         pass
 
@@ -55,10 +56,11 @@ class Player(Sprite):
             self.change_animation("Idle")
         self.rect.x += dx
 
-        if keys[pygame.K_UP]:
-            self.yspeed = -10
+        if keys[pygame.K_UP] and self.is_grounded:
+            self.yspeed = -15
             self.jump_state = True
             self.change_animation("Jump")
+            self.is_grounded = False
         self.yspeed += 1
         dy += self.yspeed
 
@@ -66,6 +68,7 @@ class Player(Sprite):
             dy = 0
             self.yspeed = 0
             self.jump_state = False
+            self.is_grounded = True
 
         self.rect.y += dy
 
