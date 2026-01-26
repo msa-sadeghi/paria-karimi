@@ -8,7 +8,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 FPS = 60
 CLOCK = pygame.time.Clock()
 
-cat = Player('Cat', 200, 200)
+cat = Player('Cat', 300, 200)
 crate_image = pygame.image.load("Object/Crate.png")
 stone_image = pygame.image.load("Object/Stone.png")
 obstacle_group = pygame.sprite.Group()
@@ -22,7 +22,7 @@ while running:
     screen.fill("lightgreen")  
     CLOCK.tick(FPS)
     cat.draw(screen)
-    cat.move()
+    cat.move(obstacle_group)
     obstacle_group.draw(screen)
     obstacle_group.update()
     pygame.display.update()

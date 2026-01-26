@@ -24,12 +24,13 @@ class Player(Sprite):
         self.yspeed = 0
         self.jump_state = False
         self.is_grounded = True
-    def update(self):
-        pass
+            
+
 
     def draw(self, surface):
         img = pygame.transform.flip(self.image, self.direction == -1, False)
         surface.blit(img , self.rect)
+        pygame.draw.rect(surface, "red", self.rect, 4)
         self.animate()
 
     def animate(self):
@@ -40,7 +41,7 @@ class Player(Sprite):
                 self.frame_index = 0
             self.image = self.all_images[self.animation_state][self.frame_index]
     
-    def move(self):
+    def move(self, group):
         dx = 0
         dy = 0
         keys = pygame.key.get_pressed()
@@ -54,6 +55,17 @@ class Player(Sprite):
             dx += 5
         if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT] and not self.jump_state:
             self.change_animation("Idle")
+
+        item = pygame.sprite.spritecollide(self, group, False)
+        if item:
+            if item[0].type == "crate":
+                if item[0].rect.colliderect(self.rect.x + dx , self.rect.y, self.rect.size[0], self.rect.size[1]):
+                    dx = 0
+                
+
+
+            elif self.type == "stone":
+                pass
         self.rect.x += dx
 
         if keys[pygame.K_UP] and self.is_grounded:
@@ -61,8 +73,25 @@ class Player(Sprite):
             self.jump_state = True
             self.change_animation("Jump")
             self.is_grounded = False
-        self.yspeed += 1
+        
         dy += self.yspeed
+        self.yspeed += 1
+
+        if item:
+            if item[0].type == "crate":
+                if item[0].rect.colliderect(self.rect.x , self.rect.y + dy, self.rect.size[0], self.rect.size[1]):
+                    print("speed+++++++++++", self.yspeed)
+                    if self.yspeed >= 3:
+                        dy = item[0].rect.top - self.rect.bottom
+                        self.yspeed = 0
+                        self.jump_state = False
+                        self.is_grounded = True
+                    else:
+                        dy = item[0].rect.bottom - self.rect.top
+                        # TODO check the bug for jumping
+                        
+                        
+
 
         if self.rect.bottom + dy >= 640:
             dy = 0
