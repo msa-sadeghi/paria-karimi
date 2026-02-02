@@ -9,4 +9,5 @@ class Obstacle(Sprite):
         group.add(self)
         self.type = type
 
-    
+    def update(self, scroll):
+        self.rect.x += scroll
