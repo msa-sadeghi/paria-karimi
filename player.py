@@ -23,7 +23,7 @@ class Player(Sprite):
         self.direction =  1
         self.yspeed = 0
         self.jump_state = False
-        self.is_grounded = True
+        self.is_grounded = False
             
 
 
@@ -45,6 +45,8 @@ class Player(Sprite):
         dx = 0
         dy = 0
         keys = pygame.key.get_pressed()
+        
+        # Handle horizontal movement input
         if keys[pygame.K_LEFT]:
             self.change_animation("Walk")
             self.direction = -1
@@ -56,50 +58,55 @@ class Player(Sprite):
         if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT] and not self.jump_state:
             self.change_animation("Idle")
 
-        item = pygame.sprite.spritecollide(self, group, False)
-        if item:
-            if item[0].type == "crate":
-                if item[0].rect.colliderect(self.rect.x + dx , self.rect.y, self.rect.size[0], self.rect.size[1]):
-                    dx = 0
-                
-
-
-            elif self.type == "stone":
-                pass
+        
         self.rect.x += dx
+        collided_obstacles = pygame.sprite.spritecollide(self, group, False)
+        for obstacle in collided_obstacles:
+            if obstacle.type == "crate" or obstacle.type == "stone":
+                # Collision from right (moving left)
+                if dx < 0:
+                    self.rect.left = obstacle.rect.right
+                # Collision from left (moving right)
+                elif dx > 0:
+                    self.rect.right = obstacle.rect.left
 
+        # ========== JUMP INPUT ==========
         if keys[pygame.K_UP] and self.is_grounded:
             self.yspeed = -15
             self.jump_state = True
             self.change_animation("Jump")
             self.is_grounded = False
         
-        dy += self.yspeed
-        self.yspeed += 1
+        # ========== GRAVITY ==========
+        if not self.is_grounded:
+            self.yspeed += 1
+        dy = self.yspeed
+        
+        
+        self.rect.y += dy
+        
+        # Check collision after Y movement
+        self.is_grounded = False
+        collided_obstacles = pygame.sprite.spritecollide(self, group, False)
+        for obstacle in collided_obstacles:
+            if obstacle.type == "crate" or obstacle.type == "stone":
+                # Collision from above (falling down)
+                if dy > 0:
+                    self.rect.bottom = obstacle.rect.top
+                    self.yspeed = 0
+                    self.jump_state = False
+                    self.is_grounded = True
+                # Collision from below (jumping up)
+                elif dy < 0:
+                    self.rect.top = obstacle.rect.bottom
+                    self.yspeed = 0
 
-        if item:
-            if item[0].type == "crate":
-                if item[0].rect.colliderect(self.rect.x , self.rect.y + dy, self.rect.size[0], self.rect.size[1]):
-                    print("speed+++++++++++", self.yspeed)
-                    if self.yspeed >= 3:
-                        dy = item[0].rect.top - self.rect.bottom
-                        self.yspeed = 0
-                        self.jump_state = False
-                        self.is_grounded = True
-                    else:
-                        dy = item[0].rect.bottom - self.rect.top
-                        # TODO check the bug for jumping
-                        
-                        
-
-
-        if self.rect.bottom + dy >= 640:
-            dy = 0
+        # ========== GROUND COLLISION ==========
+        if self.rect.bottom >= 640:
+            self.rect.bottom = 640
             self.yspeed = 0
             self.jump_state = False
             self.is_grounded = True
-
-        self.rect.y += dy
 
     def change_animation(self, new_animation):
         if self.animation_state != new_animation:
