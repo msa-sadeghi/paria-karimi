@@ -24,8 +24,6 @@ class Player(Sprite):
         self.yspeed = 0
         self.jump_state = False
         self.is_grounded = False
-            
-
 
     def draw(self, surface):
         img = pygame.transform.flip(self.image, self.direction == -1, False)
