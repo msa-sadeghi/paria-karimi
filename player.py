@@ -24,6 +24,7 @@ class Player(Sprite):
         self.yspeed = 0
         self.jump_state = False
         self.is_grounded = False
+        self.score = 0
 
     def draw(self, surface):
         img = pygame.transform.flip(self.image, self.direction == -1, False)
@@ -67,6 +68,12 @@ class Player(Sprite):
                 # Collision from left (moving right)
                 elif dx > 0:
                     self.rect.right = obstacle.rect.left
+            elif obstacle.type == 'crystal':
+                self.score += 1
+                obstacle.kill()
+                
+
+
 
         # ========== JUMP INPUT ==========
         if keys[pygame.K_UP] and self.is_grounded:
